@@ -1,0 +1,16 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
+  name: gp2
+parameters:
+  type: gp2
+  csi.storage.k8s.io/fstype: ext4 # AWS default: ext4
+  # encrypted: false # volume encrypt with kms (default: false)
+  # kmsKeyId: arn:aws:kms:us-west-2:111122223333:alias/ExampleAlias
+provisioner: ebs.csi.aws.com
+allowVolumeExpansion: false
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer

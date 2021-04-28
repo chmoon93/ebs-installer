@@ -1,0 +1,74 @@
+replicaCount: 2
+
+proxy: {}
+#  http_proxy:
+#  no_proxy:
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+  # cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
+
+enableVolumeScheduling: true
+enableVolumeResizing: true
+enableVolumeSnapshot: SNAPSHOT_ENABLE
+
+volumeAttachLimit: "39"
+
+resources:
+  limits:
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+# priorityClassName: "operational-critical"
+tolerateAllTaints: false
+
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: ScheduleAnyway
+  - maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: ScheduleAnyway
+
+# Extra volume tags to attach to each dynamically provisioned volume.
+# ---
+# extraVolumeTags:
+#   key1: value1
+#   key2: value2
+extraVolumeTags: {}
+
+extraCreateMetadata: true
+
+region: REGION
+
+node:
+  priorityClassName: ""
+  nodeSelector: {}
+  podAnnotations: {}
+  tolerateAllTaints: true
+  tolerations: []
+  resources: {}
+
+serviceAccount:
+  controller:
+    create: true
+    name: CONTROLLER_SERVICE_ACCOUNT # Name of the service-account to be used/created.
+    annotations:
+      eks.amazonaws.com/role-arn: CONTROLLER_IAM_ROLE_ARN
+
+  snapshot:
+    create: SNAPSHOT_ENABLE
+    name: SNAPSHOT_SERVICE_ACCOUNT
+    annotations:
+      eks.amazonaws.com/role-arn: SNAPSHOT_IAM_ROLE_ARN
+  node:
+    create: true
+    name: ebs-csi-node-sa
+    annotations: {}
+
+storageClasses: []
