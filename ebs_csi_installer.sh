@@ -11,7 +11,7 @@
 #   chart: aws-ebs-csi 0.9.8 (0.9.0)
 ##############################################################
 #!/bin/bash
-export CLUSTER_NAME="dabbi"
+export CLUSTER_NAME="[CLUSTER-NAME]"
 export IAM_POLICY_NAME=${CLUSTER_NAME}"-AmazonEKS_EBS_CSI_Driver_Policy"
 export CONTROLLER_IAM_ROLE_NAME=${CLUSTER_NAME}"-AmazonEKS_EBS_CSI_Driver_Role_For_Controller"
 export CONTROLLER_SERVICE_ACCOUNT="ebs-csi-controller"
@@ -24,6 +24,13 @@ export REGION="ap-northeast-2"
 export RELEASE_NAME="aws-ebs-csi-driver"
 
 source ./utils.sh
+
+WORKDIR=/tmp/$(uuidgen)
+echo "# Working Directory: $WORKDIR"
+mkdir -p $WORKDIR
+
+cp -r ./templates $WORKDIR
+cd $WORKDIR
 
 ##############################################################
 # Delete release
